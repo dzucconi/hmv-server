@@ -35,7 +35,7 @@ class Application < Sinatra::Base
     raise Exception if params[:text].nil?
 
     words = Corrasable.new(params[:text]).to_phonemes
-    output = Output.new(words)
+    output = Output.new(words, params[:type])
 
     File.open(output.filename).read
   end

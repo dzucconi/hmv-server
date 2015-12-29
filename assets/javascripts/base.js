@@ -22,7 +22,11 @@
   };
 
   function encode(val) {
-    return encodeURIComponent(val.replace(/\n/g, ' '));
+    var encoded, options;
+    options = params();
+    encoded = 'text=' + encodeURIComponent(val.replace(/\n/g, ' '));
+    if (options.type) encoded = encoded + '&type=' + options.type;
+    return encoded;
   };
 
   function init() {
@@ -55,7 +59,7 @@
         return;
       };
 
-      $source.attr('src', '/render?text=' + encode(val));
+      $source.attr('src', '/render?' + encode(val));
       $audio[0].load();
       $audio[0].play();
     });
@@ -76,7 +80,7 @@
           width: '100%',
           transition: 'width ' + duration + 's'
         });
-      } else { // Reset
+      } else {
         $progress.css({
           width: '0%',
           transition: 'none'
