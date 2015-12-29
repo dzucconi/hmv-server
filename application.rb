@@ -9,20 +9,21 @@ class Application < Sinatra::Base
   get '/' do
     HTML.new.instance_eval do
       page do
-        div(id: 'progress', class: 'progress') do
-          div(id: 'progress-bar', class: 'progress-bar')
-        end +
+        form(class: 'js-form') do
+          textarea(
+            class: 'js-input', placeholder: 'Begin typing, then <cmd> + <enter> to play', autofocus: 'true') { '' } +
 
-        form do
-          textarea(id: 'input', placeholder: 'Begin typing, then <cmd> + <enter> to play', autofocus: 'true') { '' } +
-
-          div(id: 'controls', class: 'l-controls controls') do
-            button(id: 'submit') { 'Play' }
+          div(class: 'controls js-controls') do
+            button(class: 'js-submit') { 'Play' }
           end
         end +
 
-        audio do
-          source(id: 'source', type: 'audio/wav')
+        audio(class: 'js-audio') do
+          source(type: 'audio/wav', class: 'js-source')
+        end +
+
+        div(class: 'progress') do
+          div(class: 'progress-bar js-progress')
         end
       end
     end

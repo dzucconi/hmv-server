@@ -11,10 +11,11 @@
     }
 
     return qs.split('&').reduce(function(memo, pair) {
-      var ref = pair.split('='),
-        k = ref[0],
-        v = ref[1];
+      var ref, k, v;
 
+      ref = pair.split('=');
+      k = ref[0];
+      v = ref[1];
       memo[k] = decodeURIComponent(v);
       return memo;
     }, {});
@@ -25,15 +26,16 @@
   };
 
   function init() {
-    var options = params();
+    var $audio, $controls, $form, $input, $progress, $source, $submit, options;
 
-    var $form = $('form'),
-      $audio = $('audio'),
-      $submit = $('#submit'),
-      $source = $('#source'),
-      $input = $('#input'),
-      $controls = $('#controls'),
-      $progress = $('#progress-bar');
+    options = params();
+    $form = $('.js-form');
+    $audio = $('.js-audio');
+    $submit = $('.js-submit');
+    $source = $('.js-source');
+    $input = $('.js-input');
+    $controls = $('.js-controls');
+    $progress = $('.js-progress');
 
     options.input && $input.val(options.input);
 
@@ -42,9 +44,11 @@
     });
 
     $form.on('submit', function(e) {
+      var val;
+
       e.preventDefault();
 
-      var val = $input.val();
+      val = $input.val();
 
       if (val === '') {
         $input.focus();
@@ -56,28 +60,50 @@
       $audio[0].play();
     });
 
+    var wait;
+
+    function status(to, reset, length) {
+      $submit.text(to);
+
+      if (reset) return setTimeout(function() {
+        $submit.text(reset);
+      }, length);
+    };
+
+    function progress(duration) {
+      if (duration) {
+        $progress.css({
+          width: '100%',
+          transition: 'width ' + duration + 's'
+        });
+      } else { // Reset
+        $progress.css({
+          width: '0%',
+          transition: 'none'
+        });
+      }
+    };
+
     $audio
       .on('playing', function() {
-        $submit.text('Playing');
+        status('Playing');
+        clearInterval(wait);
       })
       .on('waiting', function() {
-        $submit.text('Wait');
+        status('Wait');
       })
-      .on('error suspend', function() {
-        $submit.text('Error');
-        setTimeout(function() {
-          $submit.text('Play');
-        }, 2000);
+      .on('suspend', function() {
+        wait = status('Wait', 'Error', 2000);
+      })
+      .on('error', function() {
+        status('Error');
       })
       .on('loadedmetadata', function(e) {
-        console.log(e)
-        $progress
-          .css('width', '100%')
-          .animate({ width: 0 }, $audio[0].duration * 1000, 'linear');
+        progress($audio[0].duration);
       })
       .on('ended', function(e) {
-        $submit.text('Play');
-        $progress.css('width', '100%');
+        status('Play');
+        progress();
         $input.focus();
       });
   };
