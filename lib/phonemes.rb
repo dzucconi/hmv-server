@@ -1,251 +1,142 @@
 class Phonemes
-  def self.collection
-    {
-      aa0: {
-        kind: :vowel
-      },
-      aa1: {
-        kind: :vowel
-      },
-      aa2: {
-        kind: :vowel
-      },
+  class << self
+    def duration(phoneme)
+      self.collection[phoneme][:duration]
+    end
 
-      ae0: {
-        kind: :vowel
-      },
-      ae1: {
-        kind: :vowel
-      },
-      ae2: {
-        kind: :vowel
-      },
+    def index(key)
+      self.collection.keys.index(key)
+    end
 
-      ah0: {
-        kind: :vowel
-      },
-      ah1: {
-        kind: :vowel
-      },
-      ah2: {
-        kind: :vowel
-      },
-
-      ao0: {
-        kind: :vowel
-      },
-      ao1: {
-        kind: :vowel
-      },
-      ao2: {
-        kind: :vowel
-      },
-
-      aw0: {
-        kind: :vowel
-      },
-      aw1: {
-        kind: :vowel
-      },
-      aw2: {
-        kind: :vowel
-      },
-
-      ay0: {
-        kind: :vowel
-      },
-      ay1: {
-        kind: :vowel
-      },
-      ay2: {
-        kind: :vowel
-      },
-
-      b: {
-        kind: :stop
-      },
-
-      ch: {
-        kind: :affricate
-      },
-
-      d: {
-        kind: :stop
-      },
-
-      dh: {
-        kind: :fricative
-      },
-
-      eh0: {
-        kind: :vowel
-      },
-      eh1: {
-        kind: :vowel
-      },
-      eh2: {
-        kind: :vowel
-      },
-
-      er0: {
-        kind: :vowel
-      },
-      er1: {
-        kind: :vowel
-      },
-      er2: {
-        kind: :vowel
-      },
-
-      ey0: {
-        kind: :vowel
-      },
-      ey1: {
-        kind: :vowel
-      },
-      ey2: {
-        kind: :vowel
-      },
-
-      f: {
-        kind: :fricative
-      },
-
-      g: {
-        kind: :stop
-      },
-
-      hh: {
-        kind: :aspirate
-      },
-
-      ih0: {
-        kind: :vowel
-      },
-      ih1: {
-        kind: :vowel
-      },
-      ih2: {
-        kind: :vowel
-      },
-
-      iy0: {
-        kind: :vowel
-      },
-      iy1: {
-        kind: :vowel
-      },
-      iy2: {
-        kind: :vowel
-      },
-
-      jh: {
-        kind: :affricate
-      },
-
-      k: {
-        kind: :stop
-      },
-
-      l: {
-        kind: :liquid
-      },
-
-      m: {
-        kind: :nasal
-      },
-
-      n: {
-        kind: :nasal
-      },
-
-      ng: {
-        kind: :nasal
-      },
-
-      ow0: {
-        kind: :vowel
-      },
-      ow1: {
-        kind: :vowel
-      },
-      ow2: {
-        kind: :vowel
-      },
-
-      oy0: {
-        kind: :vowel
-      },
-      oy1: {
-        kind: :vowel
-      },
-      oy2: {
-        kind: :vowel
-      },
-
-      p: {
-        kind: :stop
-      },
-
-      r: {
-        kind: :liquid
-      },
-
-      s: {
-        kind: :fricative
-      },
-
-      sh: {
-        kind: :fricative
-      },
-
-      t: {
-        kind: :stop
-      },
-
-      th: {
-        kind: :fricative
-      },
-
-      uh0: {
-        kind: :vowel
-      },
-      uh1: {
-        kind: :vowel
-      },
-      uh2: {
-        kind: :vowel
-      },
-
-      uw0: {
-        kind: :vowel
-      },
-      uw1: {
-        kind: :vowel
-      },
-      uw2: {
-        kind: :vowel
-      },
-
-      v: {
-        kind: :fricative
-      },
-
-      w: {
-        kind: :semivowel
-      },
-
-      y: {
-        kind: :semivowel
-      },
-
-      z: {
-        kind: :fricative
-      },
-
-      zh: {
-        kind: :fricative
-       }
-    }
+    def collection
+      {
+        aa: {
+          duration: 217
+        },
+        ae: {
+          duration: 286
+        },
+        ah: {
+          duration: 328
+        },
+        ao: {
+          duration: 463
+        },
+        aw: {
+          duration: 456
+        },
+        ax: {
+          duration: 456
+        },
+        ay: {
+          duration: 300
+        },
+        b: {
+          duration: 17
+        },
+        ch: {
+          duration: 126
+        },
+        d: {
+          duration: 47
+        },
+        dh: {
+          duration: 168
+        },
+        eh: {
+          duration: 193
+        },
+        er: {
+          duration: 420
+        },
+        ey: {
+          duration: 288
+        },
+        f: {
+          duration: 93
+        },
+        g: {
+          duration: 93
+        },
+        hh: {
+          duration: 171
+        },
+        ih: {
+          duration: 286
+        },
+        iy: {
+          duration: 158
+        },
+        jh: {
+          duration: 138
+        },
+        k: {
+          duration: 93
+        },
+        l: {
+          duration: 328
+        },
+        m: {
+          duration: 185
+        },
+        n: {
+          duration: 316
+        },
+        ng: {
+          duration: 207
+        },
+        ow: {
+          duration: 417
+        },
+        oy: {
+          duration: 578
+        },
+        p: {
+          duration: 94
+        },
+        r: {
+          duration: 132
+        },
+        s: {
+          duration: 298
+        },
+        sh: {
+          duration: 308
+        },
+        t: {
+          duration: 76
+        },
+        th: {
+          duration: 256
+        },
+        uh: {
+          duration: 315
+        },
+        uw: {
+          duration: 434
+        },
+        v: {
+          duration: 287
+        },
+        w: {
+          duration: 330
+        },
+        wh: {
+          duration: 352
+        },
+        y: {
+          duration: 300
+        },
+        yu: {
+          duration: 208
+        },
+        z: {
+          duration: 320
+        },
+        zh: {
+          duration: 192
+        }
+      }
+    end
   end
 end
