@@ -1,0 +1,74 @@
+$active-color: blue
+
++global-reset()
+
+html
+  +box-sizing(border-box)
+
+*,
+*:before,
+*:after
+  box-sizing: inherit
+
+html,
+body
+  height: 100%
+
+body,
+input,
+textarea,
+button
+  color: black
+  font-size: 30px
+  line-height: 1.25
+  font-family: 'Roboto Mono', monospace
+  font-weight: 500
+  text-transform: uppercase
+  -webkit-font-smoothing: antialiased
+
+button
+  appearance: none
+  padding: 20px
+  background-color: transparent
+  border: none
+  cursor: pointer
+  transition: color 0.125s
+  &:hover,
+  &:focus
+    background-color: transparent
+    color: $active-color
+    outline: none
+
+textarea
+  position: fixed
+  top: 4px
+  right: 0
+  bottom: 0
+  left: 0
+  width: 100%
+  padding: 20px
+  vertical-align: top
+  border: none
+  &:focus
+    outline: none
+
+.l-controls
+  position: fixed
+  bottom: 0
+  left: 0
+
+.progress
+  position: fixed
+  top: 0
+  left: 0
+  height: 4px
+  width: 100%
+  background-color: $active-color
+
+.progress-bar
+  position: absolute
+  top: 0
+  right: 0
+  width: 100%
+  height: 100%
+  background-color: #ccc
