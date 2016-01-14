@@ -30,7 +30,7 @@
   };
 
   function init() {
-    var options, $form, $input, $submit, $progress;
+    var options, $form, $input, $submit, $progress, SOUND;
 
     options = params();
 
@@ -68,7 +68,7 @@
     });
 
     $form.on('submit', function(e) {
-      var val, src, sound;
+      var val, src;
 
       e.preventDefault();
 
@@ -83,10 +83,11 @@
 
       status('Wait');
 
-      sound = new Howl({
+      if (SOUND) SOUND.stop();
+
+      SOUND = new Howl({
         src: [src],
         format: ['wav'],
-        autoplay: true,
         onloaderror: function() {
           status('Error');
         },
@@ -100,6 +101,8 @@
           progress(this.duration());
         }
       });
+
+      SOUND.play();
     });
 
   };
