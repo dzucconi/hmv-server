@@ -18,10 +18,6 @@ class Application < Sinatra::Base
           end
         end +
 
-        audio(class: 'js-audio') do
-          source(type: 'audio/wav', class: 'js-source')
-        end +
-
         div(class: 'progress') do
           div(class: 'progress-bar js-progress')
         end
@@ -29,7 +25,7 @@ class Application < Sinatra::Base
     end
   end
 
-  get '/render' do
+  get '/render.wav' do
     content_type 'audio/wav'
 
     raise Exception if params[:text].nil?
