@@ -20,7 +20,7 @@ class Synthetic
   def speak(phoneme, wave_type = :sine)
     key = phoneme.downcase.gsub(/[^a-z ]/i, '').to_sym
     frequency = freq(Phonemes.index(key))
-    samples = synthesize(wave_type, (10.0 / Phonemes.duration(key)), frequency)
+    samples = synthesize(wave_type, Phonemes.duration(key), frequency)
     Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))
   end
 
