@@ -1,7 +1,16 @@
 class Phonemes
   class << self
+    def get(phoneme)
+      key = Corrasable.sanitize(phoneme).downcase.to_sym
+      self.collection[key] || {}
+    end
+
     def duration(phoneme)
-      self.collection[phoneme][:duration]
+      self.get(phoneme)[:duration] / 3_000.0
+    end
+
+    def duration_legacy(phoneme)
+      10.0 / self.get(phoneme)[:duration]
     end
 
     def index(key)
