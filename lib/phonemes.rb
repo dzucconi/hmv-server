@@ -41,13 +41,13 @@ class Phonemes
           duration: 300
         },
         b: {
-          duration: 17
+          duration: 75
         },
         ch: {
           duration: 126
         },
         d: {
-          duration: 47
+          duration: 75
         },
         dh: {
           duration: 168
