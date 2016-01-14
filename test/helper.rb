@@ -4,6 +4,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'rubygems'
 require 'bundler'
+require 'byebug'
 
 Bundler.require
 
