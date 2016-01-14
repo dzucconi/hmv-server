@@ -20,7 +20,7 @@ class Corrasable
   end
 
   def self.sanitize(string)
-    string
+    string.to_s
       .gsub(/[^a-z ]/i, '') # Avoid punctuation and numbers for the time being
   end
 end
