@@ -4,7 +4,7 @@ class Output
   def initialize(words, wave_type)
     @synth = Synthetic.new
     @words = words
-    @pause = synth.pause 0.05
+    @pause = synth.pause 0.1
     @wave_type = wave_type.nil? ? :sine : wave_type.to_sym
     generate!
   end
