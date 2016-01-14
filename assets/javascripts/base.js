@@ -81,7 +81,7 @@
 
       src = '/render.wav?' + encode(val);
 
-      status('Wait')();
+      status('Wait');
 
       sound = new Howl({
         src: [src],
