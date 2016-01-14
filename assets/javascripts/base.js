@@ -41,11 +41,12 @@
 
     options.input && $input.val(options.input);
 
-    function status(to, reset, duration) {
+    function status(to, reset, duration, cb) {
       $submit.text(to);
 
       if (reset) return setTimeout(function() {
         $submit.text(reset);
+        if (cb) cb();
       }, duration);
     };
 
@@ -89,7 +90,9 @@
         src: [src],
         format: ['wav'],
         onloaderror: function() {
-          status('Error');
+          status('Error', 'Play', 2000, function() {
+            $input.val('')
+          });
         },
         onend: function() {
           status('Play');
