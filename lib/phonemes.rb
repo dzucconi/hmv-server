@@ -17,6 +17,10 @@ class Phonemes
       self.collection.keys.index(key)
     end
 
+    def key(phoneme)
+      phoneme.downcase.gsub(/[^a-z ]/i, '').to_sym
+    end
+
     def collection
       {
         aa: {

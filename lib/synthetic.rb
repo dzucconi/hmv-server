@@ -17,10 +17,10 @@ class Synthetic
     440.0 * (2.0 ** (i / 12.0))
   end
 
-  def speak(phoneme, wave_type = :sine)
-    key = phoneme.downcase.gsub(/[^a-z ]/i, '').to_sym
-    frequency = freq(Phonemes.index(key))
-    samples = synthesize(wave_type, Phonemes.duration(key), frequency)
+  def speak(phoneme, duration, wave_type = :sine)
+    return pause duration if phoneme == :pause
+    frequency = freq(Phonemes.index(phoneme))
+    samples = synthesize(wave_type, duration, frequency)
     Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))
   end
 
