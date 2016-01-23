@@ -1,5 +1,5 @@
 class Application < Sinatra::Base
-  set :assets_precompile, %w(application.css application.js)
+  set :assets_precompile, %w(application.css application.js *.ico *png *.svg *.woff *.woff2)
   set :assets_prefix, %w(assets)
   set :assets_css_compressor, :sass
   set :protection, except: [:frame_options]
