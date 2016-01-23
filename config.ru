@@ -9,6 +9,7 @@ require 'sinatra/asset_pipeline'
 %w(
   /config/initializers/**/*.rb
   /lib/**/*.rb
+  /templates/**/*.rb
 )
   .map { |pattern| Dir[File.dirname(__FILE__) + pattern] }
   .flatten.each { |f| require(f) }
