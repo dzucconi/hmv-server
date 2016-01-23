@@ -15,4 +15,5 @@ group :development, :test do
   gem 'tux'
   gem 'byebug'
   gem 'minitest'
+  gem 'rerun'
 end
