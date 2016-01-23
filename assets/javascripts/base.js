@@ -25,6 +25,7 @@
     encoded = 'text=' + encodeURIComponent(val.replace(/\n/g, ' '));
 
     if (options.type) encoded = encoded + '&type=' + options.type;
+    if (options.duration) encoded = encoded + '&duration=' + options.duration;
 
     return encoded;
   };
