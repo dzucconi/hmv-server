@@ -5,6 +5,7 @@ require 'oj'
 require 'typhoeus'
 
 require_relative './config/initializers/object'
+require_relative './config/initializers/hash'
 require_relative './lib/corrasable'
 require_relative './lib/output'
 require_relative './lib/synthetic'
