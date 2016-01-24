@@ -24,7 +24,7 @@
     options = params();
     encoded = 'text=' + encodeURIComponent(val.replace(/\n/g, ' '));
 
-    if (options.type) encoded = encoded + '&type=' + options.type;
+    if (options.wave_type) encoded = encoded + '&wave_type=' + options.wave_type;
     if (options.duration) encoded = encoded + '&duration=' + options.duration;
 
     return encoded;

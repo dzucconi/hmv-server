@@ -14,7 +14,7 @@ class Application < Sinatra::Base
     content_type 'audio/wav'
     raise Exception if params[:text].nil?
     words = Corrasable.new(params[:text]).to_phonemes
-    output = Output.new(words, params[:duration], params[:type])
+    output = Output.new(words, params)
     output.generate!
     File.open(output.filename).read
   end
