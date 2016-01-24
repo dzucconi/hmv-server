@@ -25,7 +25,7 @@ describe 'Output' do
 
   describe '#scaled' do
     it 'converts the phonemes to a flat stream of utterancess with relatively sacled durations ' do
-      output = Output.new PHONEME_STREAM, 5
+      output = Output.new PHONEME_STREAM, { duration: 5 }
       output.scaled.must_equal [
         { phoneme: :hh, duration: 0.31701890989988873 },
         { phoneme: :ah, duration: 0.6080830552465701 },
@@ -40,7 +40,7 @@ describe 'Output' do
     end
 
     it 'has durations that add up to the target duration' do
-      Output.new(PHONEME_STREAM, 5).scaled.map { |x| x[:duration] }.reduce(:+)
+      Output.new(PHONEME_STREAM, { duration: 5 }).scaled.map { |x| x[:duration] }.reduce(:+)
         .must_equal 5.0
     end
   end

@@ -1,16 +1,19 @@
 class Output
   attr_reader :words, :pause, :buffers, :filename, :synth, :wave_type, :duration
 
-  def initialize(words, duration = nil, wave_type = :sine)
+  def initialize(words, options = {})
+    options = { duration: nil, wave_type: :sine }.merge options.symbolize_keys
+
+    @filename = options[:filename]
     @synth = Synthetic.new
     @words = words
     @pause = synth.pause 0.1
-    @duration = [duration.to_f, 30.0].min unless duration.nil?
-    @wave_type = wave_type.nil? ? :sine : wave_type.to_sym
+    @duration = [options[:duration].to_f, 30.0].min unless options[:duration].nil?
+    @wave_type = options[:wave_type].nil? ? :sine : options[:wave_type].to_sym
   end
 
   def generate!
-    @filename = Wave.concat buffers, Synthetic::SAMPLE_RATE
+    @filename = Wave.concat buffers, Synthetic::SAMPLE_RATE, @filename
   end
 
   def scaled
