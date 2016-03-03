@@ -1,5 +1,6 @@
 require 'optparse'
 require 'securerandom'
+require 'digest/sha1'
 require 'wavefile'
 require 'oj'
 require 'typhoeus'
@@ -15,15 +16,20 @@ require_relative './lib/phonemes'
 {}.tap { |options|
   OptionParser.new { |opts|
     opts.banner = "Usage: ruby cli.rb -d 5 -w \"hello world\""
-    opts.on('-w', '--words WORDS', 'Words') { |xs| options[:words] = xs }
+    opts.on('-t', '--text TEXT', 'Text') { |xs| options[:text] = xs }
     opts.on('-d', '--duration DURATION', 'Duration') { |x| options[:duration] = x.to_f }
   }.parse!
 }.let do |options|
-  words = Corrasable.new(options[:words]).to_phonemes
-  output = Output.new(words, {
+  output = Output.new({
+    text: options[:text],
     duration: options[:duration],
-    filename: "#{options[:words].downcase.gsub(/[^0-9a-z]/i, '-')}_#{options[:duration].to_s.gsub('.', '-')}"
+    filename: Digest::SHA1.hexdigest([options[:text], options[:duration]].compact.join('_'))
   })
   output.generate!
+
+  json_filename = output.filename.gsub '.wav', '.json'
+  File.write json_filename, output.to_json
+
   p output.filename
+  p json_filename
 end
