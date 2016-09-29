@@ -1,3 +1,4 @@
+require 'json'
 require 'byebug'
 require 'optparse'
 require 'securerandom'
