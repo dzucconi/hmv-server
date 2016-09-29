@@ -1,3 +1,4 @@
+require 'json'
 require 'optparse'
 require 'securerandom'
 require 'digest/sha1'
