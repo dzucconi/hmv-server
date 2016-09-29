@@ -10,6 +10,7 @@ gem 'sinatra-asset-pipeline'
 gem 'compass'
 gem 'uglifier'
 gem 'sass'
+gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
   gem 'tux'
