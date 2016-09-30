@@ -23,6 +23,11 @@ class Application < Sinatra::Base
     output.to_json
   end
 
+  get '/phonemes' do
+    content_type 'text/json'
+    Corrasable.new(params[:text]).to_phonemes.to_json
+  end
+
   error Exception do
     status 400
     'Bad Request'

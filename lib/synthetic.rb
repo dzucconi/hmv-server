@@ -9,8 +9,13 @@ class Synthetic
 
   RANDOM_GENERATOR = Random.new
 
-  def pause(length = 1.0)
-    Buffer.new(cycle(length), Format.new(:mono, :float, SAMPLE_RATE))
+  def pause(duration = 1.0)
+    Buffer.new(cycle(duration), Format.new(:mono, :float, SAMPLE_RATE))
+  end
+
+  def not_available(duration = 2.0, wave_type = :sine)
+    samples = synthesize(wave_type, duration, freq(100))
+    Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))
   end
 
   def freq(i)
@@ -18,7 +23,9 @@ class Synthetic
   end
 
   def speak(phoneme, duration, wave_type = :sine)
-    return pause duration if phoneme == :pause
+    return pause(duration) if phoneme == :pause
+    return not_available(duration, :noise) if phoneme == :not_available
+
     frequency = freq(Phonemes.index(phoneme))
     samples = synthesize(wave_type, duration, frequency)
     Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))

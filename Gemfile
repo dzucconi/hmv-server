@@ -17,4 +17,5 @@ group :development, :test do
   gem 'byebug'
   gem 'minitest'
   gem 'rerun'
+  gem 'rspec'
 end

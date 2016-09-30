@@ -15,7 +15,11 @@ class Corrasable
       Oj.load(response.body)
         .flatten(1) # Flatten outer array since we have no concept of lines
         .map { |word| word.split(' ') } # Split each word into an array of phonemes
-        .reject { |word| word == ['N/A'] } # Remove any words with failed transcriptions
+        .zip(text.split(' '))
+        .map do |phoenemes, word|
+          # Join up every word with its phoneme stream
+          [word, phoenemes]
+        end
     end
   end
 

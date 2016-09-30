@@ -6,6 +6,8 @@ class Phonemes
     end
 
     def duration(phoneme)
+      return 1.0 if phoneme === :pause
+      return 2.0 if phoneme === :not_available
       self.get(phoneme)[:duration] / 3_000.0
     end
 
@@ -22,6 +24,8 @@ class Phonemes
     end
 
     def key(phoneme)
+      return :pause if phoneme === ' '
+      return :not_available if phoneme === 'N/A'
       phoneme.downcase.gsub(/[^a-z ]/i, '').to_sym
     end
 

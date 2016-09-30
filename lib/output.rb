@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Output
   attr_reader :text, :words, :buffers, :filename, :synth, :wave_type, :duration
 
@@ -34,13 +36,14 @@ class Output
   end
 
   def stream
-    words.map.with_index { |phonemes, i|
-      phonemes.map { |phoneme|
-        key = Phonemes.key phoneme
-        { phoneme: key, duration: Phonemes.duration(key) }
-      }.tap do |word|
-        word << { phoneme: :pause, duration: 0.3 } unless i == words.size - 1
-      end
+    words.map.with_index { |(word, phonemes), i|
+      {
+        word: word,
+        phonemes: phonemes.map { |phoneme|
+          key = Phonemes.key phoneme
+          { phoneme: key, duration: Phonemes.duration(key) }
+        }
+      }
     }.flatten
   end
 
@@ -51,14 +54,21 @@ class Output
   end
 
   def to_json
-    split = text.split ' '
-    split = split.zip((split.size - 1).times.map { ' ' }).flatten
+    split = text.split(' ')
+    split = split.zip((split.size - 1).times.map { ' ' }).flatten.compact
     chunked = scaled.chunk { |x| x[:phoneme] == :pause }
-    chunked.zip(split).map do |(_, chunk), word|
-      {
-        word: word,
-        duration: chunk.map { |x| x[:duration] }.reduce(:+)
-      }
-    end.to_json
+
+    # output = chunked.zip(split).map do |(_, chunk), word|
+    #   {
+    #     word: word,
+    #     duration: chunk.map { |x| x[:duration] }.reduce(:+)
+    #   }
+    # end
+    # output.to_json
+
+    {
+      chunked: chunked.to_a,
+      split: split.to_a
+    }.to_json
   end
 end
