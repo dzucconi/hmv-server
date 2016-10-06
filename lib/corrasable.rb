@@ -12,10 +12,18 @@ class Corrasable
         text: text
       }
     ).run.let do |response|
-      Oj.load(response.body)
+      res = Oj
+        .load(response.body)
         .flatten(1) # Flatten outer array since we have no concept of lines
         .map { |word| word.split(' ') } # Split each word into an array of phonemes
-        .reject { |word| word == ['N/A'] } # Remove any words with failed transcriptions
+        .zip(text.split(' '))
+        .map { |phonemes, word|
+          # Cast the word/phonemes, include a pause
+          [Word.new(word, phonemes), Word.new(' ', [' '])]
+        }
+        .flatten
+
+      res.first(res.size - 1) # Strip the last pause
     end
   end
 

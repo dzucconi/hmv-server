@@ -18,10 +18,12 @@ class Output
 
   def scaled
     return stream if duration.nil?
-    durations = stream.map { |x| x[:duration] }
-    stream.zip(scale durations, duration).map do |(utterance, scaled)|
-      utterance.tap { |x| x[:duration] = scaled }
-    end
+    durations = stream.map(&:duration)
+    stream
+      .zip(scale(durations, duration))
+      .map { |(word, scaled)| word.scale(scaled) }
+      .map(&:phonemes)
+      .flatten
   end
 
   def scale(unscaled, duration)
@@ -34,31 +36,16 @@ class Output
   end
 
   def stream
-    words.map.with_index { |phonemes, i|
-      phonemes.map { |phoneme|
-        key = Phonemes.key phoneme
-        { phoneme: key, duration: Phonemes.duration(key) }
-      }.tap do |word|
-        word << { phoneme: :pause, duration: 0.3 } unless i == words.size - 1
-      end
-    }.flatten
+    words.map(&:phonemes).flatten
   end
 
   def buffers
-    scaled.map do |utterance|
-      synth.speak utterance[:phoneme], utterance[:duration], wave_type
+    scaled.map do |phoneme|
+      synth.speak phoneme, wave_type
     end
   end
 
   def to_json
-    split = text.split ' '
-    split = split.zip((split.size - 1).times.map { ' ' }).flatten
-    chunked = scaled.chunk { |x| x[:phoneme] == :pause }
-    chunked.zip(split).map do |(_, chunk), word|
-      {
-        word: word,
-        duration: chunk.map { |x| x[:duration] }.reduce(:+)
-      }
-    end.to_json
+    words.to_json
   end
 end
