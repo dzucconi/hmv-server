@@ -1,157 +1,142 @@
 class Phonemes
   class << self
     def get(phoneme)
-      key = Corrasable.sanitize(phoneme).downcase.to_sym
-      self.collection[key] || {}
-    end
-
-    def duration(phoneme)
-      self.get(phoneme)[:duration] / 3_000.0
-    end
-
-    def duration_legacy(phoneme)
-      10.0 / self.get(phoneme)[:duration]
-    end
-
-    def index(key)
-      self.collection.keys.index(key)
-    end
-
-    def note(key)
-      self.collection.keys.index(key) - (self.collection.keys.size / 2)
-    end
-
-    def key(phoneme)
-      phoneme.downcase.gsub(/[^a-z ]/i, '').to_sym
+      self.collection[phoneme] || {}
     end
 
     def collection
       {
-        aa: {
+        AA: {
           duration: 217
         },
-        ae: {
+        AE: {
           duration: 286
         },
-        ah: {
+        AH: {
           duration: 328
         },
-        ao: {
+        AO: {
           duration: 463
         },
-        aw: {
+        AW: {
           duration: 456
         },
-        ax: {
+        AX: {
           duration: 456
         },
-        ay: {
+        AY: {
           duration: 300
         },
-        b: {
+        B: {
           duration: 75
         },
-        ch: {
+        CH: {
           duration: 126
         },
-        d: {
+        D: {
           duration: 75
         },
-        dh: {
+        DH: {
           duration: 168
         },
-        eh: {
+        EH: {
           duration: 193
         },
-        er: {
+        ER: {
           duration: 420
         },
-        ey: {
+        EY: {
           duration: 288
         },
-        f: {
+        F: {
           duration: 93
         },
-        g: {
+        G: {
           duration: 93
         },
-        hh: {
+        HH: {
           duration: 171
         },
-        ih: {
+        IH: {
           duration: 286
         },
-        iy: {
+        IY: {
           duration: 158
         },
-        jh: {
+        JH: {
           duration: 138
         },
-        k: {
+        K: {
           duration: 93
         },
-        l: {
+        L: {
           duration: 328
         },
-        m: {
+        M: {
           duration: 185
         },
-        n: {
+        N: {
           duration: 316
         },
-        ng: {
+        NG: {
           duration: 207
         },
-        ow: {
+        OW: {
           duration: 417
         },
-        oy: {
+        OY: {
           duration: 578
         },
-        p: {
+        P: {
           duration: 94
         },
-        r: {
+        R: {
           duration: 132
         },
-        s: {
+        S: {
           duration: 298
         },
-        sh: {
+        SH: {
           duration: 308
         },
-        t: {
+        T: {
           duration: 76
         },
-        th: {
+        TH: {
           duration: 256
         },
-        uh: {
+        UH: {
           duration: 315
         },
-        uw: {
+        UW: {
           duration: 434
         },
-        v: {
+        V: {
           duration: 287
         },
-        w: {
+        W: {
           duration: 330
         },
-        wh: {
+        WH: {
           duration: 352
         },
-        y: {
+        Y: {
           duration: 300
         },
-        yu: {
+        YU: {
           duration: 208
         },
-        z: {
+        Z: {
           duration: 320
         },
-        zh: {
+        ZH: {
           duration: 192
+        },
+        PAUSE: {
+          duration: 1_000
+        },
+        UNAVAILABLE: {
+          duration: 2_000
         }
       }
     end

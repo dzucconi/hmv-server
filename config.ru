@@ -15,6 +15,7 @@ require 'sinatra/asset_pipeline'
 
 %w(
   /config/initializers/**/*.rb
+  /models/**/*.rb
   /lib/**/*.rb
   /templates/**/*.rb
 )
