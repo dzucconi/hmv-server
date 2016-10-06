@@ -12,7 +12,7 @@ class Corrasable
         text: text
       }
     ).run.let do |response|
-      res = Oj
+      Oj
         .load(response.body)
         .flatten(1) # Flatten outer array since we have no concept of lines
         .map { |word| word.split(' ') } # Split each word into an array of phonemes
@@ -22,8 +22,6 @@ class Corrasable
           [Word.new(word, phonemes), Word.new(' ', [' '])]
         }
         .flatten
-
-      res.first(res.size - 1) # Strip the last pause
     end
   end
 
