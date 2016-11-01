@@ -26,7 +26,7 @@ class Synthetic
     return pause(phoneme.duration) if phoneme.phoneme == :PAUSE
     return not_available(phoneme.duration, :noise) if phoneme.phoneme == :UNAVAILABLE
 
-    frequency = freq(phoneme.index)
+    frequency = phoneme.frequency
     samples = synthesize(wave_type, phoneme.duration, frequency)
     Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))
   end
