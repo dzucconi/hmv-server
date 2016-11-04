@@ -12,6 +12,8 @@ gem 'uglifier'
 gem 'sass'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rb-music', '~> 0.0.6'
+gem 'fog'
+gem 'mime-types'
 
 group :development, :test do
   gem 'foreman'

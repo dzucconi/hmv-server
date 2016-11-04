@@ -12,9 +12,18 @@ class Application < Sinatra::Base
 
   get '/render.wav' do
     content_type 'audio/wav'
+
     output = Output.new params
-    output.generate!
-    File.open(output.filename).read
+    cached = Storage.get(output.filename)
+
+    unless cached
+      output.generate!
+      io = File.open output.filename
+      Storage.set io, output.filename
+      io.read
+    else
+      cached.body
+    end
   end
 
   get '/render.json' do

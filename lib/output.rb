@@ -1,10 +1,12 @@
+require 'digest'
+
 class Output
-  attr_reader :text, :words, :buffers, :filename, :synth, :wave_type, :duration
+  attr_reader :text, :words, :buffers, :key, :synth, :wave_type, :duration
 
   def initialize(options = {})
     options = { duration: nil, wave_type: :sine }.merge options.symbolize_keys
 
-    @filename = options[:filename]
+    @key = options[:key] || Digest::SHA256.hexdigest(options[:text])
     @synth = Synthetic.new
     @text = options[:text]
     @words = options[:words] || Corrasable.new(@text).to_phonemes
@@ -13,7 +15,11 @@ class Output
   end
 
   def generate!
-    @filename = Wave.concat buffers, Synthetic::SAMPLE_RATE, @filename
+    Wave.concat buffers, Synthetic::SAMPLE_RATE, filename
+  end
+
+  def filename
+    "tmp/#{key}.wav"
   end
 
   def scaled
