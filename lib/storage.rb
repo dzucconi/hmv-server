@@ -31,7 +31,7 @@ module Storage
     def set(io, key)
       object = bucket.files.create(key: key, public: true, body: io.read)
       io.rewind
-      return [io, object]
+      [io, object]
     end
 
     def delete(key)

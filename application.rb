@@ -16,13 +16,13 @@ class Application < Sinatra::Base
     output = Output.new params
     cached = Storage.get(output.filename)
 
-    unless cached
+    if cached
+      cached.body
+    else
       output.generate!
       io = File.open output.filename
       Storage.set io, output.filename
       io.read
-    else
-      cached.body
     end
   end
 

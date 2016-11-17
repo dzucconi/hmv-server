@@ -14,7 +14,7 @@ class Word
     @duration = duration
   end
 
-  def to_json(options = {})
+  def to_json(*)
     {
       word: word,
       duration: duration,

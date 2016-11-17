@@ -1,5 +1,5 @@
 class Phonemes
-  NOTES = [:F, :C, :G, :D, :A, :E, :B]
+  NOTES = [:F, :C, :G, :D, :A, :E, :B].freeze
 
   class << self
     def get(phoneme)

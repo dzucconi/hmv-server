@@ -1,17 +1,21 @@
 class HTML
   include Sprockets::Helpers
 
+  def respond_to_missing?
+    super
+  end
+
   def method_missing(type, attributes = {})
-    tag type, attributes, (block_given? ? yield.to_s : nil)
+    tag(type, attributes, block_given? ? yield.to_s : nil) || super
   end
 
   def tag(type, attributes, content)
-    attributes.map { |k, v|
+    attributes.map do |k, v|
       "#{k}='#{v}'"
-    }.join(' ').let { |attrs|
+    end.join(' ').let do |attrs|
       " #{attrs}" unless attrs.empty?
-    }.let { |attrs|
+    end.let do |attrs|
       content.nil? ? "<#{type}#{attrs}>" : "<#{type}#{attrs}>#{content}</#{type}>"
-    }
+    end
   end
 end

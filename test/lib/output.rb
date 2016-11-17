@@ -1,9 +1,9 @@
 require File.expand_path '../../helper.rb', __FILE__
 
 PHONEME_STREAM = [
-  %w[HH AH0 L OW1], # HELLO
-  %w[W ER1 L D] # WORLD
-]
+  %w(HH AH0 L OW1), # HELLO
+  %w(W ER1 L D) # WORLD
+].freeze
 
 describe 'Output' do
   describe '#stream' do
@@ -41,7 +41,7 @@ describe 'Output' do
     end
 
     it 'has durations that add up to the target duration' do
-      Output.new({ words: PHONEME_STREAM, duration: 5 })
+      Output.new(words: PHONEME_STREAM, duration: 5)
         .scaled.map { |x| x[:duration] }.reduce(:+)
         .must_equal 5.0
     end

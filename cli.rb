@@ -14,18 +14,18 @@ require_relative './lib/synthetic'
 require_relative './lib/wave'
 require_relative './lib/phonemes'
 
-{}.tap { |options|
-  OptionParser.new { |opts|
-    opts.banner = "Usage: ruby cli.rb -d 5 -w \"hello world\""
+{}.tap do |options|
+  OptionParser.new do |opts|
+    opts.banner = "Usage: ruby cli.rb -d 5 -w 'hello world'"
     opts.on('-t', '--text TEXT', 'Text') { |xs| options[:text] = xs }
     opts.on('-d', '--duration DURATION', 'Duration') { |x| options[:duration] = x.to_f }
-  }.parse!
-}.let do |options|
-  output = Output.new({
+  end.parse!
+end.let do |options|
+  output = Output.new(
     text: options[:text],
     duration: options[:duration],
     filename: Digest::SHA1.hexdigest([options[:text], options[:duration]].compact.join('_'))
-  })
+  )
   output.generate!
 
   json_filename = output.filename.gsub '.wav', '.json'

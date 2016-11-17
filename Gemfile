@@ -22,4 +22,5 @@ group :development, :test do
   gem 'minitest'
   gem 'rerun'
   gem 'rspec'
+  gem 'rubocop'
 end

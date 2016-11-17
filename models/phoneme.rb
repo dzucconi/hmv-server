@@ -5,7 +5,8 @@ class Phoneme
   DURATION_BASE = 3_000.0
 
   def initialize(phoneme)
-    @phoneme = case phoneme
+    @phoneme =
+      case phoneme
       when 'N/A'
         :UNAVAILABLE
       when ' '
@@ -28,7 +29,7 @@ class Phoneme
   end
 
   def latin
-    (Phonemes.notes[index % Phonemes.notes.length]).to_s + octave.to_s
+    Phonemes.notes[index % Phonemes.notes.length].to_s + octave.to_s
   end
 
   def note
@@ -39,7 +40,7 @@ class Phoneme
     note.frequency
   end
 
-  def to_json(options = {})
+  def to_json(*)
     {
       phoneme: phoneme,
       index: index,
