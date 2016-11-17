@@ -75,3 +75,6 @@ ClosingParenthesisIndentation:
 
 Style/MultilineMethodCallBraceLayout:
   EnforcedStyle: new_line
+
+Style/EachWithObject:
+  Enabled: false
