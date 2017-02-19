@@ -3,13 +3,18 @@ require 'digest'
 class Output
   attr_reader :text, :words, :buffers, :key, :synth, :wave_type, :duration
 
-  def initialize(options = {})
-    options = { duration: nil, wave_type: :sine }.merge options.symbolize_keys
+  DEFAULTS = {
+    duration: nil,
+    wave_type: :sine
+  }
 
-    @key = options[:key] || Digest::SHA256.hexdigest(options[:text])
+  def initialize(params = {})
+    options = DEFAULTS.merge(params)
+
+    @key = options[:key] || Digest::SHA256.hexdigest(options.to_json)
     @synth = Synthetic.new
     @text = options[:text]
-    @words = options[:words] || Corrasable.new(@text).to_phonemes
+    @words = Corrasable.new(@text).to_phonemes
     @duration = [options[:duration].to_f, 30.0].min unless options[:duration].nil?
     @wave_type = options[:wave_type].nil? ? :sine : options[:wave_type].to_sym
   end

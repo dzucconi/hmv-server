@@ -6,6 +6,18 @@ class Application < Sinatra::Base
 
   register Sinatra::AssetPipeline
 
+  before do
+    params.symbolize_keys!
+  end
+
+  helpers do
+    def output_params
+      params.pick(:key, :text, :duration, :wave_type).tap do |options|
+        halt 400 unless options.ensure(:text)
+      end
+    end
+  end
+
   get '/' do
     Template::Index.page
   end
@@ -13,8 +25,8 @@ class Application < Sinatra::Base
   get '/render.wav' do
     content_type 'audio/wav'
 
-    output = Output.new params
-    cached = Storage.get(output.filename)
+    output = Output.new output_params
+    cached = Storage.get output.filename
 
     if cached
       cached.body
@@ -28,7 +40,7 @@ class Application < Sinatra::Base
 
   get '/render.json' do
     content_type 'text/json'
-    output = Output.new params
+    output = Output.new output_params
     output.to_json
   end
 
