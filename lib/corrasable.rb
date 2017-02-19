@@ -6,7 +6,7 @@ class Corrasable
   end
 
   def to_phonemes
-    Typhoeus::Request.new('api.corrasable.com/phonemes',
+    Typhoeus::Request.new('https://api.corrasable.com/phonemes',
       method: :post,
       params: { text: text }
     ).run.let do |response|
