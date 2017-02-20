@@ -2,16 +2,18 @@
 class Synthetic
   include WaveFile
 
-  attr_reader :shape
+  attr_reader :shape, :octave
 
   AMPLITUDE = 1.0
   SAMPLE_RATE = 44_100
   TWO_PI = 2 * Math::PI
   RANDOM_GENERATOR = Random.new
   DEFAULT_SHAPE = :sine
+  DEFAULT_OCTAVE = 3
 
-  def initialize(shape)
+  def initialize(shape, octave)
     @shape = shape || DEFAULT_SHAPE
+    @octave = octave || DEFAULT_OCTAVE
   end
 
   def pause(duration = 1.0)
@@ -30,6 +32,8 @@ class Synthetic
   def speak(phoneme)
     return pause(phoneme.duration) if phoneme.phoneme == :PAUSE
     return not_available(phoneme.duration, :noise) if phoneme.phoneme == :UNAVAILABLE
+
+    phoneme.pitch(octave)
 
     frequency = phoneme.frequency
     samples = synthesize(phoneme.duration, frequency)
@@ -71,4 +75,11 @@ class Synthetic
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
+
+  def to_json(*)
+    {
+      shape: shape,
+      octave: octave
+    }.to_json
+  end
 end
