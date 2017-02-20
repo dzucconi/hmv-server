@@ -28,7 +28,7 @@ class Application < Sinatra::Base
 
   get '/render.wav' do
     content_type 'audio/wav'
-    Cached.get @output.filename do
+    Storage.get @output.filename do
       @output.generate!
       File.open @output.filename
     end

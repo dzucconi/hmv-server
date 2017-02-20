@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Corrasable
-  attr_reader :text
+  attr_reader :text, :response
 
   ENDPOINT = 'https://api.corrasable.com/phonemes'
 
@@ -36,7 +36,15 @@ class Corrasable
     )
   end
 
+  def get
+    @response ||= Cached.get(CGI.escape request.url) do
+      request.run.body
+    end
+
+    Oj.load response
+  end
+
   def to_words
-    self.class.cast(text, Oj.load(request.run.body))
+    self.class.cast(text, get)
   end
 end
