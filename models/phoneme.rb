@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Phoneme
-  attr_reader :phoneme, :scalar
+  attr_reader :phoneme, :scalar, :octave_offset
 
   SCALAR_BASE = 1.0
   OCTAVE_OFFSET = 3
@@ -27,7 +27,7 @@ class Phoneme
   end
 
   def octave
-    ((index + 1) / (Phonemes.length / Phonemes.octaves)).ceil + OCTAVE_OFFSET
+    ((index + 1) / (Phonemes.length / Phonemes.octaves)).ceil + (octave_offset || OCTAVE_OFFSET)
   end
 
   def latin
@@ -44,6 +44,10 @@ class Phoneme
 
   def scale(scalar)
     @scalar = scalar
+  end
+
+  def pitch(octave_offset)
+    @octave_offset = octave_offset
   end
 
   def to_json(*)

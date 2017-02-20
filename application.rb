@@ -22,7 +22,7 @@ class Application < Sinatra::Base
   end
 
   before %r{^/render.*} do
-    synth = Synthetic.new params[:shape]&.to_sym
+    synth = Synthetic.new params[:shape]&.to_sym, (params[:octave] || Synthetic::DEFAULT_OCTAVE).to_i
     @output = Output.new @stream, synth
   end
 

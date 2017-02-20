@@ -26,6 +26,7 @@
 
     if (options.shape) encoded = encoded + '&shape=' + options.shape;
     if (options.scalar) encoded = encoded + '&scalar=' + options.scalar;
+    if (options.octave) encoded = encoded + '&octave=' + options.octave;
 
     return encoded;
   };
