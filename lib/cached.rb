@@ -2,14 +2,16 @@
 class Cached
   class << self
     def get(key)
-      cached = Storage.get key
-      if cached
-        cached.body
+      cached = $REDIS.get key
+      if cached.nil?
+        value = yield.to_s
+        $REDIS.set key, value
+        value
       else
-        io = yield
-        Storage.set io, key
-        io.read
+        cached
       end
+    rescue
+      yield.to_s
     end
   end
 end

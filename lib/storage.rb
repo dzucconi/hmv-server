@@ -16,6 +16,17 @@ module Storage
     end
 
     def get(key)
+      cached = __get__ key
+      if cached
+        cached.body
+      else
+        io = yield
+        set io, key
+        io.read
+      end
+    end
+
+    def __get__(key)
       bucket.files.get(key)
     end
 

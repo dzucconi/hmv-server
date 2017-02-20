@@ -197,6 +197,7 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.5)
       trollop (~> 2.1)
+    redis (3.3.3)
     rerun (0.11.0)
       listen (~> 3.0)
     ripl (0.7.1)
@@ -281,6 +282,7 @@ DEPENDENCIES
   puma
   rack-cors
   rb-music (~> 0.0.6)
+  redis (~> 3.2)
   rerun
   rspec
   rubocop
