@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require File.expand_path '../../helper.rb', __FILE__
 
 PHONEME_STREAM = [
@@ -51,7 +52,7 @@ describe 'Output' do
     it 'outputs a set of words with start/stop times' do
       skip 'output deviation'
       Output.new(text: 'hello world', words: PHONEME_STREAM, duration: 5)
-        .to_json.must_equal %{[{"word":"hello","duration":2.3062662217278453},{"word":" ","duration":0.5561735261401556},{"word":"world","duration":2.137560252131998}]}
+        .to_json.must_equal %{([{"word":"hello","duration":2.3062662217278453},{"word":" ","duration":0.5561735261401556},{"word":"world","duration":2.137560252131998}])}
     end
   end
 end

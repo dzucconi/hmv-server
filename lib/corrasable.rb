@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 class Corrasable
   attr_reader :text
 
-  ENDPOINT = 'https://api.corrasable.com/phonemes'.freeze
+  ENDPOINT = 'https://api.corrasable.com/phonemes'
 
   class << self
     def cast(text, response)

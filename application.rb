@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Application < Sinatra::Base
   set :assets_precompile, %w(application.css application.js *.ico *png *.svg *.woff *.woff2)
   set :assets_prefix, %w(assets)
@@ -10,47 +11,36 @@ class Application < Sinatra::Base
     params.symbolize_keys!
   end
 
-  helpers do
-    def output_params
-      params.pick(:key, :text, :duration, :wave_type).tap do |options|
-        halt 400 unless options.ensure(:text)
-      end
-    end
-  end
-
   get '/' do
     Template::Index.page
   end
 
+  before %r{^/(render.*|phonemes)} do
+    halt 400 unless params.ensure(:text)
+    words = Corrasable.new(params[:text]).to_words
+    @stream = PhonemeStream.new words, scalar: (params[:scalar] || 1).to_f
+  end
+
+  before %r{^/render.*} do
+    synth = Synthetic.new params[:shape]&.to_sym
+    @output = Output.new @stream, synth
+  end
+
   get '/render.wav' do
     content_type 'audio/wav'
-
-    output = Output.new output_params
-    cached = Storage.get output.filename
-
-    if cached
-      cached.body
-    else
-      output.generate!
-      io = File.open output.filename
-      Storage.set io, output.filename
-      io.read
+    Cached.get @output.filename do
+      @output.generate!
+      File.open @output.filename
     end
   end
 
   get '/render.json' do
     content_type 'text/json'
-    output = Output.new output_params
-    output.to_json
+    @output.to_json
   end
 
   get '/phonemes' do
     content_type 'text/json'
-    Corrasable.new(params[:text]).to_phonemes.to_json
-  end
-
-  error Exception do
-    status 400
-    'Bad Request'
+    @stream.to_json
   end
 end

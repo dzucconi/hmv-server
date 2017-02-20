@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 class Cached
   class << self
-    def get(key, &block)
+    def get(key)
       cached = Storage.get key
       if cached
         cached.body
