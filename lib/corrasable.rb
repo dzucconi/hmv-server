@@ -1,17 +1,12 @@
+# frozen_string_literal: true
 class Corrasable
   attr_reader :text
 
-  def initialize(text)
-    @text = self.class.sanitize(text)
-  end
+  ENDPOINT = 'https://api.corrasable.com/phonemes'
 
-  def to_phonemes
-    Typhoeus::Request.new('https://api.corrasable.com/phonemes',
-      method: :post,
-      params: { text: text }
-    ).run.let do |response|
-      Oj
-        .load(response.body)
+  class << self
+    def cast(text, response)
+      response
         .flatten(1) # Flatten outer array since we have no concept of lines
         .map { |word| word.split(' ') } # Split each word into an array of phonemes
         .zip(text.split(' '))
@@ -21,10 +16,27 @@ class Corrasable
         end
         .flatten
     end
+
+    def sanitize(string)
+      string.to_s
+        .gsub(/[^a-z ]/i, '') # Avoid punctuation and numbers for the time being
+    end
   end
 
-  def self.sanitize(string)
-    string.to_s
-      .gsub(/[^a-z ]/i, '') # Avoid punctuation and numbers for the time being
+  def initialize(text)
+    @text = self.class.sanitize(text)
+  end
+
+  def request
+    Typhoeus::Request.new(ENDPOINT,
+      method: :post,
+      params: {
+        text: text
+      }
+    )
+  end
+
+  def to_words
+    self.class.cast(text, Oj.load(request.run.body))
   end
 end

@@ -24,8 +24,8 @@
     options = params();
     encoded = 'text=' + encodeURIComponent(val.replace(/\n/g, ' '));
 
-    if (options.wave_type) encoded = encoded + '&wave_type=' + options.wave_type;
-    if (options.duration) encoded = encoded + '&duration=' + options.duration;
+    if (options.shape) encoded = encoded + '&shape=' + options.shape;
+    if (options.scalar) encoded = encoded + '&scalar=' + options.scalar;
 
     return encoded;
   };

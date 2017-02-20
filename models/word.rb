@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Word
   attr_reader :word, :phonemes
 
@@ -7,11 +8,15 @@ class Word
   end
 
   def duration
-    @duration || @phonemes.map(&:duration).reduce(:+)
+    phonemes.map(&:duration).reduce(:+)
   end
 
-  def scale(duration)
-    @duration = duration
+  def scale(scalar)
+    phonemes.each do |phoneme|
+      phoneme.scale(scalar)
+    end
+
+    phonemes
   end
 
   def to_json(*)

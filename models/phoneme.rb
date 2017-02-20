@@ -1,7 +1,9 @@
+# frozen_string_literal: true
 class Phoneme
-  attr_reader :phoneme
+  attr_reader :phoneme, :scalar
 
-  OFFSET = 3 # Push scale up
+  SCALAR_BASE = 1.0
+  OCTAVE_OFFSET = 3
   DURATION_BASE = 3_000.0
 
   def initialize(phoneme)
@@ -17,7 +19,7 @@ class Phoneme
   end
 
   def duration
-    Phonemes.get(phoneme)[:duration] / DURATION_BASE
+    (Phonemes.get(phoneme)[:duration] / DURATION_BASE) * (scalar || SCALAR_BASE)
   end
 
   def index
@@ -25,7 +27,7 @@ class Phoneme
   end
 
   def octave
-    ((index + 1) / (Phonemes.length / Phonemes.octaves)).ceil + OFFSET
+    ((index + 1) / (Phonemes.length / Phonemes.octaves)).ceil + OCTAVE_OFFSET
   end
 
   def latin
@@ -38,6 +40,10 @@ class Phoneme
 
   def frequency
     note.frequency
+  end
+
+  def scale(scalar)
+    @scalar = scalar
   end
 
   def to_json(*)

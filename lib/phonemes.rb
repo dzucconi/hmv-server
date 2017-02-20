@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Phonemes
   NOTES = [:F, :C, :G, :D, :A, :E, :B].freeze
 

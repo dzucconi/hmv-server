@@ -1,20 +1,25 @@
+# frozen_string_literal: true
 class Synthetic
   include WaveFile
 
+  attr_reader :shape
+
   AMPLITUDE = 1.0
-
   SAMPLE_RATE = 44_100
-
   TWO_PI = 2 * Math::PI
-
   RANDOM_GENERATOR = Random.new
+  DEFAULT_SHAPE = :sine
+
+  def initialize(shape)
+    @shape = shape || DEFAULT_SHAPE
+  end
 
   def pause(duration = 1.0)
     Buffer.new(cycle(duration), Format.new(:mono, :float, SAMPLE_RATE))
   end
 
-  def not_available(duration = 2.0, wave_type = :sine)
-    samples = synthesize(wave_type, duration, freq(100))
+  def not_available(duration = 2.0)
+    samples = synthesize(duration, freq(100))
     Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))
   end
 
@@ -22,12 +27,12 @@ class Synthetic
     440.0 * (2.0**(i / 12.0))
   end
 
-  def speak(phoneme, wave_type = :sine)
+  def speak(phoneme)
     return pause(phoneme.duration) if phoneme.phoneme == :PAUSE
     return not_available(phoneme.duration, :noise) if phoneme.phoneme == :UNAVAILABLE
 
     frequency = phoneme.frequency
-    samples = synthesize(wave_type, phoneme.duration, frequency)
+    samples = synthesize(phoneme.duration, frequency)
 
     Buffer.new(samples, Format.new(:mono, :float, SAMPLE_RATE))
   end
@@ -37,7 +42,7 @@ class Synthetic
   end
 
   # rubocop:disable Metrics/CyclomaticComplexity
-  def synthesize(wave_type, length, frequency)
+  def synthesize(length, frequency)
     position = 0.0
     position_delta = frequency / SAMPLE_RATE
 
@@ -45,7 +50,7 @@ class Synthetic
       samples.size.times do |i|
         # Add next sample to sample list. The sample value is determined by
         # plugging position into the appropriate wave function.
-        case wave_type
+        case shape
         when :sine
           samples[i] = Math::sin(position * TWO_PI) * AMPLITUDE
         when :square

@@ -1,62 +1,34 @@
+# frozen_string_literal: true
 require 'digest'
 
 class Output
-  attr_reader :text, :words, :buffers, :key, :synth, :wave_type, :duration
+  attr_reader :key, :stream, :synth
 
-  DEFAULTS = {
-    duration: nil,
-    wave_type: :sine
-  }
-
-  def initialize(params = {})
-    options = DEFAULTS.merge(params)
-
-    @key = options[:key] || Digest::SHA256.hexdigest(options.to_json)
-    @synth = Synthetic.new
-    @text = options[:text]
-    @words = Corrasable.new(@text).to_phonemes
-    @duration = [options[:duration].to_f, 30.0].min unless options[:duration].nil?
-    @wave_type = options[:wave_type].nil? ? :sine : options[:wave_type].to_sym
+  def self.keyify(*inputs)
+    Digest::SHA256.hexdigest(inputs.to_json)
   end
 
-  def generate!
-    Wave.concat buffers, Synthetic::SAMPLE_RATE, filename
+  def initialize(stream, synth)
+    @key = self.class.keyify(stream, synth)
+    @stream = stream
+    @synth = synth
   end
 
   def filename
     "tmp/#{key}.wav"
   end
 
-  def scaled
-    return stream if duration.nil?
-    durations = stream.map(&:duration)
-    stream
-      .zip(scale(durations, duration))
-      .map { |(word, scaled)| word.scale(scaled) }
-      .map(&:phonemes)
-      .flatten
-  end
-
-  def scale(unscaled, duration)
-    total = unscaled.reduce(:+)
-    precision = 10**10
-    ratios = unscaled.map do |length|
-      (length * precision) / (total * precision)
-    end
-    ratios.map { |ratio| ratio * duration }
-  end
-
-  def stream
-    words.map(&:phonemes).flatten
-  end
-
   def buffers
-    scaled.map do |phoneme|
-      synth.speak phoneme, wave_type
+    @buffers ||= stream.phonemes.map do |phoneme|
+      synth.speak phoneme
     end
   end
 
-  def to_json
-    words.to_json
+  def generate!
+    @generated ||= Wave.concat buffers, Synthetic::SAMPLE_RATE, filename
+  end
+
+  def to_json(*)
+    stream.to_json
   end
 end
