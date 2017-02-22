@@ -13,6 +13,7 @@ gem 'rb-music', '~> 0.0.6'
 gem 'sass'
 gem 'sinatra'
 gem 'sinatra-asset-pipeline', '0.7.0'
+gem 'tux'
 gem 'typhoeus'
 gem 'uglifier'
 gem 'wavefile'
@@ -24,5 +25,4 @@ group :development, :test do
   gem 'rerun'
   gem 'rspec'
   gem 'rubocop'
-  gem 'tux'
 end
