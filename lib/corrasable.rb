@@ -37,7 +37,8 @@ class Corrasable
 
   def get
     @response ||= Cached.get(CGI.escape request.url) do
-      request.run.body
+      res = request.run
+      res.success? ? res.body : raise(res.return_message)
     end
 
     Oj.load response
