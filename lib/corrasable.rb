@@ -1,19 +1,17 @@
+require 'byebug'
+
 # frozen_string_literal: true
 class Corrasable
   attr_reader :text, :response
 
-  ENDPOINT = 'https://api.corrasable.com/phonemes'
+  ENDPOINT = 'https://api.corrasable.com/words/bulk'
 
   class << self
     def cast(text, response)
-      response
-        .flatten(1) # Flatten outer array since we have no concept of lines
-        .zip(Tokenizer.tokenize text)
-        .map do |phonemes, word|
-          # Cast the word/phonemes, include a pause
-          [Word.new(word, phonemes), Word.new(' ', [' '])]
-        end
-        .flatten
+      response['words'].map do |word|
+        # Cast the word/phonemes, include a pause
+        [Word.new(word['word'], word['phonemes']), Word.new(' ', [' '])]
+      end.flatten
     end
   end
 
