@@ -15,15 +15,10 @@ class Corrasable
         end
         .flatten
     end
-
-    def sanitize(string)
-      string.to_s
-        .gsub(/[^a-z ]/i, '') # Avoid punctuation and numbers for the time being
-    end
   end
 
   def initialize(text)
-    @text = self.class.sanitize(text)
+    @text = text
   end
 
   def request
