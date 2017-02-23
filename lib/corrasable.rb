@@ -1,5 +1,3 @@
-require 'byebug'
-
 # frozen_string_literal: true
 class Corrasable
   attr_reader :text, :response
