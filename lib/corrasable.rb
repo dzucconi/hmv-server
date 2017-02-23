@@ -8,8 +8,7 @@ class Corrasable
     def cast(text, response)
       response
         .flatten(1) # Flatten outer array since we have no concept of lines
-        .map { |word| word.split(' ') } # Split each word into an array of phonemes
-        .zip(text.split(' '))
+        .zip(Tokenizer.tokenize text)
         .map do |phonemes, word|
           # Cast the word/phonemes, include a pause
           [Word.new(word, phonemes), Word.new(' ', [' '])]
