@@ -11,7 +11,7 @@ class Phoneme
       case phoneme
       when 'N/A'
         :UNAVAILABLE
-      when ' '
+      when ' ', ''
         :PAUSE
       else
         phoneme.to_s.upcase.gsub(/[^a-z ]/i, '').to_sym
