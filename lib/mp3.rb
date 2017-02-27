@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Mp3
   def self.encode(buffers)
     encoder = LAME::Encoder.new
