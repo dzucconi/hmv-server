@@ -23,11 +23,11 @@ class Application < Sinatra::Base
 
   before %r{^/render.*} do
     @synth = Synthetic.new params[:shape]&.to_sym, (params[:octave] || Synthetic::DEFAULT_OCTAVE).to_i
+    @output = Output.new @stream, @synth
   end
 
   get '/render.wav' do
     content_type 'audio/wav'
-    @output = Output.new @stream, @synth
     filename = "#{@output.filename}.wav"
     Storage.get filename do
       Wave.concat @output.buffers, Synthetic::SAMPLE_RATE, filename
@@ -37,7 +37,6 @@ class Application < Sinatra::Base
 
   get '/render.mp3' do
     content_type 'audio/mp3'
-    @output = Output.new @stream, @synth
     Storage.get "#{@output.filename}.mp3" do
       Mp3.encode @output.buffers
     end
