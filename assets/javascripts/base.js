@@ -82,7 +82,7 @@
         return;
       };
 
-      src = '/render.wav?' + encode(val);
+      src = '/render.mp3?' + encode(val);
 
       status('Wait');
 
@@ -90,7 +90,7 @@
 
       SOUND = new Howl({
         src: [src],
-        format: ['wav'],
+        format: ['mp3'],
         onloaderror: function() {
           status('Error', 'Play', 2000, function() {
             $input.val('')
