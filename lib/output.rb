@@ -15,17 +15,13 @@ class Output
   end
 
   def filename
-    "tmp/#{key}.wav"
+    "tmp/#{key}"
   end
 
   def buffers
     @buffers ||= stream.phonemes.map do |phoneme|
       synth.speak phoneme
     end
-  end
-
-  def generate!
-    @generated ||= Wave.concat buffers, Synthetic::SAMPLE_RATE, filename
   end
 
   def to_json(*)
