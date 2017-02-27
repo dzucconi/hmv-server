@@ -81,9 +81,19 @@ class Application < Sinatra::Base
 
   get '/render.wav' do
     content_type 'audio/wav'
-    Storage.get @output.filename do
-      @output.generate!
-      File.open @output.filename
+    @output = Output.new @stream, @synth
+    filename = "#{@output.filename}.wav"
+    Storage.get filename do
+      Wave.concat @output.buffers, Synthetic::SAMPLE_RATE, filename
+      File.open filename
+    end
+  end
+
+  get '/render.mp3' do
+    content_type 'audio/mp3'
+    @output = Output.new @stream, @synth
+    Storage.get "#{@output.filename}.mp3" do
+      Mp3.encode @output.buffers
     end
   end
 

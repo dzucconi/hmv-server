@@ -17,6 +17,7 @@ gem 'tux'
 gem 'typhoeus'
 gem 'uglifier'
 gem 'wavefile'
+gem 'lame'
 
 group :development, :test do
   gem 'byebug'
