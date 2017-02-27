@@ -163,6 +163,8 @@ GEM
     inflecto (0.0.2)
     ipaddress (0.8.3)
     json (2.0.3)
+    lame (0.0.4)
+      ffi
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -276,6 +278,7 @@ DEPENDENCIES
   compass
   fog
   foreman
+  lame
   mime-types
   minitest
   oj
