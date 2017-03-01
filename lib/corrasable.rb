@@ -5,7 +5,7 @@ class Corrasable
   ENDPOINT = 'https://api.corrasable.com/words/bulk'
 
   class << self
-    def cast(text, response)
+    def cast(response)
       response['words'].map do |word|
         # Cast the word/phonemes, include a pause
         [Word.new(word['word'], word['phonemes']), Word.new(' ', [' '])]
@@ -27,7 +27,7 @@ class Corrasable
   end
 
   def get
-    @response ||= Cached.get(CGI.escape request.url) do
+    @response ||= Cached.get(CGI.escape(request.url)) do
       res = request.run
       res.success? ? res.body : raise(res.return_message)
     end
@@ -36,6 +36,6 @@ class Corrasable
   end
 
   def to_words
-    self.class.cast(text, get)
+    self.class.cast(get)
   end
 end

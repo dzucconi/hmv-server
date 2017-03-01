@@ -3,7 +3,7 @@ require File.expand_path '../../helper.rb', __FILE__
 
 describe 'PhonemeStream' do
   before(:each) do
-    @words = Corrasable.cast('hello world', [%w(HH AH0 L OW1), %w(W ER1 L D)])
+    @words = Corrasable.cast([%w(HH AH0 L OW1), %w(W ER1 L D)])
   end
 
   describe '#key' do
