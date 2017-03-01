@@ -18,7 +18,9 @@ class Application < Sinatra::Base
   before %r{^/(render.*|phonemes)} do
     halt 400 unless params.ensure(:text)
     words = Corrasable.new(params[:text]).to_words
-    @stream = PhonemeStream.new words, scalar: (params[:scalar] || 1).to_f
+    options = { scalar: (params[:scalar] || 1).to_f }
+    options[:pause] = params[:pause].to_f if params.key?(:pause)
+    @stream = PhonemeStream.new words, options
   end
 
   before %r{^/render.*} do
