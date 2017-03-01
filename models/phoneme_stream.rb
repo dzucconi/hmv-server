@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class PhonemeStream
-  attr_reader :words, :scalar, :scaled
+  attr_reader :words, :scalar, :scaled, :pause
 
   DEFAULTS = {
     scalar: 1.0
@@ -8,11 +8,17 @@ class PhonemeStream
 
   def initialize(words, params = {})
     options = DEFAULTS.merge(params)
-
     @words = words
-    @scalar = options[:scalar] || 1.0
-    @scaled = words.tap do |x|
-      x.each { |word| word.scale(@scalar) }
+    @scalar = options[:scalar]
+    @pause = options[:pause]
+    @scaled = words.tap do |xs|
+      xs.each do |word|
+        if !pause.nil? && word.pause?
+          word.durate pause
+        else
+          word.scale @scalar
+        end
+      end
     end
   end
 
