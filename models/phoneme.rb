@@ -19,7 +19,11 @@ class Phoneme
   end
 
   def duration
-    (Phonemes.get(phoneme)[:duration] / DURATION_BASE) * (scalar || SCALAR_BASE)
+    @duration || (Phonemes.get(phoneme)[:duration] / DURATION_BASE) * (scalar || SCALAR_BASE)
+  end
+
+  def duration=(d)
+    @duration = d
   end
 
   def index
