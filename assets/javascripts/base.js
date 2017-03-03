@@ -131,6 +131,9 @@
         .then(res => {
           $save.text('Saved');
           setTimeout(() => $save.text(restore), 2500);
+        }, () => {
+          $save.text('Error');
+          setTimeout(() => $save.text(restore), 2500);
         });
     });
 

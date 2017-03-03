@@ -8,7 +8,7 @@ class Saved
     end
 
     def get(key, _replace = false)
-      Oj.load(DB.get(key))
+      Oj.load(DB.get(key)).symbolize_keys!
     end
 
     def set(key, value)

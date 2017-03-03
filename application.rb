@@ -61,30 +61,28 @@ class Application < Sinatra::Base
   end
 
   get '/all' do
-    @all = Saved.all
-    Template::All.page @all
+    @pieces = Piece.all
+    Template::All.page @pieces
   end
 
   post '/save' do
     content_type 'text/json'
-
-    url = Storage.url @output.filename do
-      @output.generate!
-      File.open @output.filename
-    end
-
-    payload = { url: url, output: @output }
-
-    Saved.set @output.key, payload
+    @piece = Piece.new(
+      key: @output.key,
+      input: params[:text],
+      output: @output
+    )
+    @piece.save
+    @piece.to_json
   end
 
   get '/:key' do
     content_type 'text/json'
-    Saved.get(params[:key]).to_json
+    Piece.find(params[:key]).to_json
   end
 
   post '/delete' do
-    Saved.delete(params[:key])
+    Piece.delete(params[:key])
     200
   end
 end

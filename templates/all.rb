@@ -1,13 +1,13 @@
 module Template
   class All
-    def self.page(all)
+    def self.page(pieces)
       Layout.page do
         HTML.new.instance_eval do
-          div(class: 'all') do
-            all.map do |key|
-              div(class: 'saved') do
-                a(href: "/#{key}") { key } + ' ' +
-                a(class: 'delete js-delete', 'data-key' => key) { 'Delete' }
+          div(class: 'pieces') do
+            pieces.map do |piece|
+              div(class: 'piece') do
+                a(href: "/#{piece.key}") { piece.input } + ' ' +
+                a(class: 'delete js-delete', 'data-key' => piece.key) { 'Delete' }
               end
             end.join('')
           end
