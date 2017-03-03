@@ -15,7 +15,7 @@ class Application < Sinatra::Base
     Template::Index.page
   end
 
-  before %r{^/(render.*|phonemes)} do
+  before %r{^/(render.*|phonemes|save)} do
     halt 400 unless params.ensure(:text)
     words = Corrasable.new(params[:text]).to_words
     options = { scalar: (params[:scalar] || 1).to_f }
@@ -23,9 +23,23 @@ class Application < Sinatra::Base
     @stream = PhonemeStream.new words, options
   end
 
-  before %r{^/render.*} do
+  before %r{^/(render.*|save)} do
     synth = Synthetic.new params[:shape]&.to_sym, (params[:octave] || Synthetic::DEFAULT_OCTAVE).to_i
     @output = Output.new @stream, synth
+  end
+
+  get '/rendered.json' do
+    content_type 'text/json'
+
+    url = Storage.url @output.filename do
+      @output.generate!
+      File.open @output.filename
+    end
+
+    {
+      url: url,
+      output: @output
+    }.to_json
   end
 
   get '/render.wav' do
@@ -44,5 +58,33 @@ class Application < Sinatra::Base
   get '/phonemes' do
     content_type 'text/json'
     @stream.to_json
+  end
+
+  get '/all' do
+    @all = Saved.all
+    Template::All.page @all
+  end
+
+  post '/save' do
+    content_type 'text/json'
+
+    url = Storage.url @output.filename do
+      @output.generate!
+      File.open @output.filename
+    end
+
+    payload = { url: url, output: @output }
+
+    Saved.set @output.key, payload
+  end
+
+  get '/:key' do
+    content_type 'text/json'
+    Saved.get(params[:key]).to_json
+  end
+
+  post '/delete' do
+    Saved.delete(params[:key])
+    200
   end
 end

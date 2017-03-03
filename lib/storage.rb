@@ -16,14 +16,25 @@ module Storage
     end
 
     def get(key)
-      cached = __get__ key
+      cached = __get__(key)
       if cached
         cached.body
       else
         io = yield
-        set io, key
+        set(io, key)
         io.read
       end
+    end
+
+    def url(key)
+      cached = __get__(key)
+      obj = if cached
+              cached
+            else
+              io = yield
+              set(io, key)
+      end
+      obj.public_url
     end
 
     def __get__(key)
@@ -39,7 +50,7 @@ module Storage
 
       io.rewind
 
-      [io, object]
+      object
     end
 
     def delete(key)

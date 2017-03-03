@@ -8,7 +8,8 @@ module Template
               class: 'js-input', placeholder: 'Begin typing, then <cmd> + <enter> to play', autofocus: 'true') { '' } +
 
             div(class: 'controls js-controls') do
-              button(class: 'js-submit') { 'Play' }
+              button(class: 'js-submit') { 'Play' } +
+              a(class: 'js-save') { 'Save' }
             end
           end +
 
