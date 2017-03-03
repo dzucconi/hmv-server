@@ -7,7 +7,7 @@ class Saved
       DB.keys
     end
 
-    def get(key, replace = false)
+    def get(key, _replace = false)
       Oj.load(DB.get(key))
     end
 

@@ -29,10 +29,10 @@ module Storage
     def url(key)
       cached = __get__(key)
       obj = if cached
-        cached
-      else
-        io = yield
-        set(io, key)
+              cached
+            else
+              io = yield
+              set(io, key)
       end
       obj.public_url
     end
