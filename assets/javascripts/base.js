@@ -27,12 +27,13 @@
     if (options.shape) encoded = encoded + '&shape=' + options.shape;
     if (options.scalar) encoded = encoded + '&scalar=' + options.scalar;
     if (options.octave) encoded = encoded + '&octave=' + options.octave;
+    if (options.pause) encoded = encoded + '&pause=' + options.pause;
 
     return encoded;
   };
 
   function init() {
-    var options, $form, $input, $submit, $progress, SOUND;
+    var options, $form, $input, $submit, $save, $delete, $progress, SOUND;
 
     options = params();
 
@@ -40,6 +41,8 @@
     $input = $('.js-input');
     $submit = $('.js-submit');
     $progress = $('.js-progress');
+    $save = $('.js-save');
+    $delete = $('.js-delete');
 
     options.input && $input.val(options.input);
 
@@ -93,7 +96,7 @@
         format: ['wav'],
         onloaderror: function() {
           status('Error', 'Play', 2000, function() {
-            $input.val('')
+            $input.val('');
           });
         },
         onend: function() {
@@ -110,6 +113,39 @@
       SOUND.play();
     });
 
+    $save.on('click', function(e) {
+      e.preventDefault();
+
+      const val = $input.val();
+
+      if (val === '') {
+        $input.focus();
+        return;
+      };
+
+      const restore = $save.text();
+
+      $save.text('Saving');
+
+      $.post('/save', { text: val })
+        .then(res => {
+          $save.text('Saved');
+          setTimeout(() => $save.text(restore), 2500);
+        });
+    });
+
+    $delete.on('click', function(e) {
+      e.preventDefault();
+
+      const $this = $(this);
+
+      if (!confirm('Are you sure you want to continue?')) return false;
+
+      $this.text('Deleting');
+
+      $.post('/delete', { key: $this.data('key') })
+        .then(() => location.reload());
+    });
   };
 
   $(init);
