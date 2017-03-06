@@ -2,6 +2,7 @@
 ruby '2.4.0'
 source 'https://rubygems.org'
 
+gem 'aws-sdk', '~> 2'
 gem 'compass'
 gem 'fog'
 gem 'mime-types'
