@@ -5,14 +5,51 @@ class Application < Sinatra::Base
   set :assets_css_compressor, :sass
   set :protection, except: [:frame_options]
 
+  enable :sessions
+
   register Sinatra::AssetPipeline
+
+  helpers do
+    def logged_in?
+      !!session[:authenticated]
+    end
+
+    def render(template, *data)
+      Template::Layout.page do
+        template.page(@user, *data)
+      end
+    end
+  end
 
   before do
     params.symbolize_keys!
+    @user = User.new session[:authenticated]
   end
 
   get '/' do
-    Template::Index.page
+    render Template::Index
+  end
+
+  get '/login' do
+    return redirect to('/') if logged_in?
+    render Template::Login
+  end
+
+  get '/logout' do
+    session[:authenticated] = false
+    redirect to('/')
+  end
+
+  post '/login' do
+    @user.username = params[:username]
+    @user.password = params[:password]
+    if @user.authentic?
+      session[:authenticated] = true
+      redirect to('/')
+    else
+      @user.password = nil
+      redirect to('/login')
+    end
   end
 
   before %r{^/(render.*|phonemes|save)} do
@@ -61,11 +98,11 @@ class Application < Sinatra::Base
   end
 
   get '/all' do
-    @pieces = Piece.all
-    Template::All.page @pieces
+    render Template::All, Piece.all
   end
 
   post '/save' do
+    return redirect '/' unless logged_in?
     content_type 'text/json'
     @piece = Piece.new(
       key: @output.key,
@@ -82,6 +119,7 @@ class Application < Sinatra::Base
   end
 
   post '/delete' do
+    return redirect '/' unless logged_in?
     Piece.delete(params[:key])
     200
   end

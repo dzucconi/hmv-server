@@ -24,6 +24,10 @@ button
   text-transform: uppercase
   -webkit-font-smoothing: antialiased
 
+input
+  appearance: none
+  border: 2px solid
+
 button
   appearance: none
   padding: 20px
@@ -57,3 +61,7 @@ a
   text-decoration: none
   cursor: pointer
 
+  &:hover,
+  &:focus
+    color: lighten(black, 50%)
+    outline: none
