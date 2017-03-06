@@ -4,7 +4,7 @@ class Synthetic
 
   attr_reader :shape, :octave
 
-  AMPLITUDE = 1.0
+  AMPLITUDE = 0.66
   SAMPLE_RATE = 44_100
   TWO_PI = 2 * Math::PI
   RANDOM_GENERATOR = Random.new
