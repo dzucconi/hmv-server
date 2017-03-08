@@ -66,7 +66,7 @@ class Application < Sinatra::Base
   end
 
   get '/rendered.json' do
-    content_type 'text/json'
+    content_type 'application/json'
 
     url = Storage.url @output.filename do
       @output.generate!
@@ -88,12 +88,12 @@ class Application < Sinatra::Base
   end
 
   get '/render.json' do
-    content_type 'text/json'
+    content_type 'application/json'
     @output.to_json
   end
 
   get '/phonemes' do
-    content_type 'text/json'
+    content_type 'application/json'
     @stream.to_json
   end
 
@@ -103,7 +103,7 @@ class Application < Sinatra::Base
 
   post '/save' do
     return redirect '/' unless logged_in?
-    content_type 'text/json'
+    content_type 'application/json'
     @piece = Piece.new(
       key: @output.key,
       input: params[:text],
@@ -114,7 +114,7 @@ class Application < Sinatra::Base
   end
 
   get '/:key' do
-    content_type 'text/json'
+    content_type 'application/json'
     Piece.find(params[:key]).to_json
   end
 

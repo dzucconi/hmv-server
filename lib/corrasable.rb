@@ -32,7 +32,7 @@ class Corrasable
       res.success? ? res.body : raise(res.return_message)
     end
 
-    Oj.load response
+    JSON.parse response
   end
 
   def to_words

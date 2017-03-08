@@ -7,8 +7,8 @@ class Saved
       DB.keys
     end
 
-    def get(key, _replace = false)
-      Oj.load(DB.get(key)).symbolize_keys!
+    def get(key)
+      JSON.parse(DB.get(key)).symbolize_keys!
     end
 
     def set(key, value)
