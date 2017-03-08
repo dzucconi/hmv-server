@@ -15,6 +15,10 @@ module Storage
       @bucket ||= connection.directories.get(BUCKET)
     end
 
+    def qualified(key)
+      "https://#{BUCKET}.s3.amazonaws.com/#{key}"
+    end
+
     def get(key)
       cached = __get__(key)
       if cached
