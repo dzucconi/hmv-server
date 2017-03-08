@@ -20,22 +20,28 @@ class Piece
 
   def initialize(options)
     @key = options[:key]
-    @url = options[:url]
+    @wav = options[:wav]
+    @mp3 = options[:mp3]
     @input = options[:input]
     @output = options[:output]
   end
 
-  def url
-    @url ||= Storage.url @output.filename do
+  def wav
+    @wav ||= Storage.url @output.filename do
       @output.generate!
       File.open @output.filename
     end
   end
 
+  def mp3
+    @mp3 ||= Transcoder.convert(key)
+  end
+
   def attrs
     {
       key: key,
-      url: url,
+      wav: wav,
+      mp3: mp3,
       input: input,
       output: output
     }
