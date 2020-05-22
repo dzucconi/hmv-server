@@ -191,7 +191,7 @@ GEM
     parser (2.5.1.0)
       ast (~> 2.4.0)
     powerpack (0.1.2)
-    puma (3.7.0)
+    puma (3.12.6)
     rack (1.6.11)
     rack-cors (0.4.1)
     rack-protection (1.5.5)
