@@ -4,7 +4,7 @@ This project implements a form of speech synthesis by concatenating pure tones w
 
 ## Meta
 
-- **State**: development
+- **State**: archived
 - **Production**:
   - **URL**: http://hmv.services.damonzucconi.com/
   - **URL**: https://damonzucconi-hmv.herokuapp.com/
